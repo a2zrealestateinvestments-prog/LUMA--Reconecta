@@ -8,8 +8,8 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
 
-  // Reemplaza esto con tu llave de Google AI Studio
-  const API_KEY = "TU_API_KEY_AQUI"; 
+  // Esto jala tu llave de forma segura desde los Secrets de GitHub
+  const API_KEY = import.meta.env.VITE_GEMINI_API_KEY; 
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -46,37 +46,37 @@ export default function App() {
 
   return (
     <div className="flex flex-col h-screen bg-slate-50 font-sans">
-      {/* Header */}
+      {/* Encabezado */}
       <header className="bg-teal-600 text-white p-4 shadow-md text-center">
-        <h1 className="text-xl font-bold italic">Luma Reconecta</h1>
+        <h1 className="text-xl font-bold italic text-white">Luma Reconecta</h1>
       </header>
 
-      {/* Chat Area */}
+      {/* Área de Chat */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.map((m, i) => (
           <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div className={`max-w-[80%] p-3 rounded-2xl shadow-sm ${m.role === 'user' ? 'bg-teal-500 text-white' : 'bg-white text-slate-700 border border-slate-200'}`}>
+            <div className={`max-w-[85%] p-3 rounded-2xl shadow-sm ${m.role === 'user' ? 'bg-teal-500 text-white' : 'bg-white text-slate-700 border border-slate-200'}`}>
               {m.text}
             </div>
           </div>
         ))}
-        {loading && <div className="text-slate-400 text-sm italic">Luma está pensando...</div>}
+        {loading && <div className="text-slate-400 text-sm italic ml-2">Luma está escribiendo...</div>}
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input Area */}
+      {/* Área de Entrada */}
       <div className="p-4 bg-white border-t border-slate-200">
         <div className="flex gap-2 max-w-4xl mx-auto">
           <input 
-            className="flex-1 p-3 border border-slate-300 rounded-full focus:outline-none focus:border-teal-500"
+            className="flex-1 p-3 border border-slate-300 rounded-full focus:outline-none focus:border-teal-500 text-slate-700"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
-            placeholder="Escribe aquí tu mensaje..."
+            placeholder="Escribe un mensaje..."
           />
           <button 
             onClick={sendMessage}
-            className="bg-teal-600 text-white px-6 py-2 rounded-full hover:bg-teal-700 transition-colors"
+            className="bg-teal-600 text-white px-6 py-2 rounded-full hover:bg-teal-700 transition-colors font-semibold"
           >
             Enviar
           </button>
